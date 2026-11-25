@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>EYVAZZADA AI — Умный ИИ-чат • Фото • Видеостудия 60 FPS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "system-ui", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            cosmos: "#05070f",
+          },
+          animation: {
+            "aurora-slow": "auroraFloat 14s ease-in-out infinite alternate",
+            "aurora-reverse": "auroraFloat 18s ease-in-out infinite alternate-reverse",
+            "pulse-glow": "pulseGlow 3s ease-in-out infinite",
+            "spin-slow": "spin 10s linear infinite",
+          },
+          keyframes: {
+            auroraFloat: {
+              "0%": { transform: "translate(0px, 0px) scale(1)" },
+              "50%": { transform: "translate(24px, -18px) scale(1.08)" },
+              "100%": { transform: "translate(-18px, 14px) scale(0.96)" },
+            },
+            pulseGlow: {
+              "0%, 100%": { opacity: "0.85", transform: "scale(1)" },
+              "50%": { opacity: "1", transform: "scale(1.04)" },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100dvh;
+      background-color: #05070f;
+      color: #f8fafc;
+      font-family: "Inter", system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Aurora Glassmorphism Surfaces */
+    .glass-card {
+      background: rgba(13, 18, 34, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 18px 45px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    }
+
+    .glass-bubble-ai {
+      background: linear-gradient(145deg, rgba(19, 26, 48, 0.88), rgba(12, 16, 31, 0.92));
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .glass-bubble-user {
+      background: linear-gradient(135deg, #6d28d9 0%, #9333ea 52%, #4f46e5 100%);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 10px 28px -8px rgba(124, 58, 237, 0.55);
+    }
+
+    /* Custom Scrollbars */
+    .chat-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .chat-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chat-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.22);
+      border-radius: 9999px;
+    }
+    .chat-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.4);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Timeline Scrubber Styling */
+    input[type="range"].cinema-scrubber {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.16);
+      height: 5px;
+      border-radius: 9999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].cinema-scrubber::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #e879f9;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 10px rgba(232, 121, 249, 0.85);
+      cursor: pointer;
+    }
+
+    /* Typing Dots Animation */
+    .typing-dot {
+      animation: typingBounce 1.25s infinite ease-in-out;
+    }
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.18s;
+    }
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.36s;
+    }
+    @keyframes typingBounce {
+      0%, 80%, 100% {
+        transform: translateY(0);
+        opacity: 0.45;
+      }
+      40% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    /* Markdown Content Styling */
+    .md-content p {
+      margin-bottom: 0.55rem;
+      line-height: 1.58;
+    }
+    .md-content p:last-child {
+      margin-bottom: 0;
+    }
+    .md-content ul,
+    .md-content ol {
+      margin: 0.45rem 0 0.65rem 1.25rem;
+    }
+    .md-content ul {
+      list-style-type: disc;
+    }
+    .md-content ol {
+      list-style-type: decimal;
+    }
+    .md-content li {
+      margin-bottom: 0.25rem;
+      line-height: 1.52;
+    }
+    .md-content strong {
+      color: #f1f5f9;
+      font-weight: 700;
+    }
+    .md-content code.inline-code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.82em;
+      background: rgba(139, 92, 246, 0.18);
+      border: 1px solid rgba(167, 139, 250, 0.28);
+      color: #ddd6fe;
+      padding: 0.1rem 0.38rem;
+      border-radius: 0.4rem;
+    }
+  </style>
+</head>
+<body class="relative min-h-[100dvh] flex flex-col selection:bg-fuchsia-500/30 selection:text-white">
+  <!-- Ambient Aurora Background Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+    <div class="absolute -top-28 -left-24 w-80 sm:w-[28rem] h-80 sm:h-[28rem] rounded-full bg-violet-600/20 blur-[110px] animate-aurora-slow"></div>
+    <div class="absolute top-1/3 -right-24 w-72 sm:w-[26rem] h-72 sm:h-[26rem] rounded-full bg-fuchsia-600/15 blur-[115px] animate-aurora-reverse"></div>
+    <div class="absolute -bottom-28 left-1/4 w-80 sm:w-[30rem] h-80 sm:h-[30rem] rounded-full bg-cyan-500/15 blur-[120px] animate-aurora-slow"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:24px_24px]"></div>
+  </div>
+
+  <!-- Main Responsive App Shell -->
+  <div class="relative z-10 flex flex-col w-full max-w-4xl mx-auto h-[100dvh] px-2.5 sm:px-5 py-2.5 sm:py-4 gap-2.5 sm:gap-3">
+    <!-- 1. HEADER -->
+    <header class="glass-card rounded-2xl px-3.5 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-2 shrink-0">
+      <div class="flex items-center gap-3 min-w-0">
+        <!-- Custom Animated Glowing Emblem -->
+        <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center shrink-0 animate-pulse-glow">
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-violet-600 via-fuchsia-500 to-cyan-400 opacity-90 blur-[4px]"></div>
+          <div class="relative w-full h-full rounded-2xl bg-[#090d1c] border border-white/25 flex items-center justify-center overflow-hidden">
+            <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="eyvGrad" x1="4" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#38BDF8" />
+                  <stop offset="50%" stop-color="#E879F9" />
+                  <stop offset="100%" stop-color="#8B5CF6" />
+                </linearGradient>
+              </defs>
+              <circle cx="18" cy="18" r="14" stroke="url(#eyvGrad)" stroke-width="1.6" stroke-dasharray="5 3" class="animate-spin-slow origin-center" />
+              <path d="M12 11.5H24M12 18H21.5M12 24.5H24" stroke="url(#eyvGrad)" stroke-width="2.6" stroke-linecap="round" />
+              <circle cx="25.5" cy="18" r="2" fill="#38BDF8" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-fuchsia-200 to-cyan-200 bg-clip-text text-transparent truncate">
+              EYVAZZADA AI
+            </h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-violet-500/20 text-violet-300 border border-violet-400/30">
+              NEURAL v3
+            </span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-slate-400 truncate">
+            Умный ИИ-чат • Генерация фото • Видеостудия 60 FPS
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Controls: Quota Pill + Clear Chat -->
+      <div class="flex items-center gap-2 shrink-0">
+        <div
+          id="quotaPill"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500/10 border border-amber-400/30 text-amber-300 shadow-inner transition-all duration-300"
+        >
+          <span id="quotaDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="quotaText">Бесплатно: 5 / 5</span>
+        </div>
+
+        <button
+          id="clearChatBtn"
+          type="button"
+          title="Очистить историю диалога"
+          class="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] active:scale-95 text-slate-300 hover:text-white border border-white/10 transition"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18" />
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. MODE SWITCHER & CONTEXTUAL ASPECT RATIO BAR -->
+    <section class="glass-card rounded-2xl p-1.5 sm:p-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 shrink-0">
+      <div class="grid grid-cols-3 gap-1.5 flex-1" role="tablist" aria-label="Выбор режима работы EYVAZZADA AI">
+        <button
+          type="button"
+          data-mode="chat"
+          class="mode-btn flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 active:scale-[0.98]"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Чат</span>
+        </button>
+
+        <button
+          type="button"
+          data-mode="image"
+          class="mode-btn flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 active:scale-[0.98]"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="m21 15-5-5L5 21" />
+          </svg>
+          <span>Фото</span>
+        </button>
+
+        <button
+          type="button"
+          data-mode="video"
+          class="mode-btn flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 active:scale-[0.98]"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="15" height="14" rx="2.5" />
+            <path d="m17 10 5-3v10l-5-3Z" />
+          </svg>
+          <span>Видео</span>
+        </button>
+      </div>
+
+      <!-- Aspect Ratio Selector (Visible in Photo & Video modes) -->
+      <div id="aspectRatioBar" class="hidden items-center justify-between sm:justify-end gap-1.5 px-2.5 py-1 sm:py-0 rounded-xl bg-white/[0.03] border border-white/10">
+        <span class="text-[11px] text-slate-400 font-medium">Формат:</span>
+        <div class="flex items-center gap-1">
+          <button type="button" data-ratio="9:16" class="ratio-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition">9:16</button>
+          <button type="button" data-ratio="1:1" class="ratio-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition">1:1</button>
+          <button type="button" data-ratio="16:9" class="ratio-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition">16:9</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Mode Info Strip -->
+    <div class="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center gap-2 text-[11px] sm:text-xs text-slate-300 shrink-0">
+      <span id="modeDot" class="w-2 h-2 rounded-full bg-violet-400 shrink-0"></span>
+      <span id="modeSubtitle" class="truncate">Умный диалог с ИИ — ответы на любые вопросы, код, идеи и анализ.</span>
+    </div>
+
+    <!-- 3. CHAT & GENERATION FEED -->
+    <main
+      id="chatFeed"
+      class="flex-1 min-h-0 overflow-y-auto chat-scroll space-y-3.5 pr-1 pb-2"
+      aria-live="polite"
+    ></main>
+
+    <!-- 4. QUICK SUGGESTION CHIPS + INPUT BAR -->
+    <footer class="shrink-0 space-y-2">
+      <!-- Quick Prompt Chips -->
+      <div id="promptChipsRow" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"></div>
+
+      <!-- Prompt Form -->
+      <form id="promptForm" class="glass-card rounded-2xl p-2 flex items-end gap-2">
+        <textarea
+          id="promptInput"
+          rows="1"
+          placeholder="Спросите что угодно у EYVAZZADA AI..."
+          class="flex-1 bg-transparent text-sm sm:text-[15px] text-white placeholder-slate-400 resize-none border-0 outline-none px-2.5 py-2 max-h-32 leading-relaxed"
+        ></textarea>
+
+        <button
+          id="submitBtn"
+          type="submit"
+          class="shrink-0 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 hover:brightness-110 active:scale-95 shadow-lg shadow-violet-600/30 border border-white/20 transition disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <span id="submitBtnText">Отправить</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13" />
+            <path d="m22 2-7 20-4-9-9-4Z" />
+          </svg>
+        </button>
+      </form>
+    </footer>
+  </div>
+
+  <!-- Toast Notification Container (No alert() used anywhere) -->
+  <div
+    id="toastBanner"
+    class="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 px-4 py-2.5 rounded-2xl glass-card border border-fuchsia-400/40 text-xs sm:text-sm font-semibold text-white shadow-2xl flex items-center gap-2 max-w-[92vw]"
+  >
+    <span class="w-2 h-2 rounded-full bg-fuchsia-400 shrink-0"></span>
+    <span id="toastText"></span>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // Runtime API Configuration (Automatically injected by Canvas environment when apiKey is empty)
+      const apiKey = "";
+      const TEXT_MODEL = "gemini-3-flash-preview";
+      const IMAGE_MODEL = "gemini-3.1-flash-image";
+
+      // Persistent Storage Keys
+      const STORAGE_VIP_KEY = "eyvazzada_ai_vip_unlimited_v3";
+      const STORAGE_QUOTA_KEY = "eyvazzada_ai_free_quota_v3";
+      const MAX_FREE_QUOTA = 5;
+
+      // Load saved quota & VIP status safely
+      let savedVip = false;
+      let savedQuota = MAX_FREE_QUOTA;
+      try {
+        savedVip = localStorage.getItem(STORAGE_VIP_KEY) === "true";
+        const rawQ = localStorage.getItem(STORAGE_QUOTA_KEY);
+        if (rawQ !== null && !Number.isNaN(Number(rawQ))) {
+          savedQuota = Math.max(0, Math.min(MAX_FREE_QUOTA, parseInt(rawQ, 10)));
+        }
+      } catch (_) {}
+
+      // Application State
+      const state = {
+        mode: "chat", // 'chat' | 'image' | 'video'
+        aspectRatio: "9:16", // '9:16' | '1:1' | '16:9'
+        remainingFree: savedQuota,
+        isUnlimited: savedVip,
+        isBusy: false,
+        chatHistory: [],
+        activeVideoLoops: new Map(),
+      };
+
+      // Mode Metadata & Viral Quick Chips
+      const MODES = {
+        chat: {
+          subtitle: "Умный диалог с ИИ — ответы на любые вопросы, код, идеи, перевод и анализ.",
+          placeholder: "Спросите что угодно у EYVAZZADA AI...",
+          btnText: "Отправить",
+          dotClass: "bg-violet-400",
+          chips: [
+            { label: "Сколько хромосом у человека?", prompt: "Сколько хромосом у человека и за что они отвечают? Объясни кратко и понятно." },
+            { label: "Напиши игру на Python", prompt: "Напиши увлекательную консольную игру на Python в одном файле с комментариями на русском." },
+            { label: "Идеи для вирусного видео", prompt: "Придумай 5 крутых идей для вирусных коротких видео в формате POV/экшн." },
+            { label: "Что посмотреть в Баку?", prompt: "Составь идеальный маршрут на один день по самым красивым местам Баку." },
+          ],
+        },
+        image: {
+          subtitle: "Генерация фотореалистичных изображений и артов в форматах 9:16, 1:1 и 16:9.",
+          placeholder: "Опишите изображение: например, пёс в кроссовках на велике по ночному городу...",
+          btnText: "Создать фото",
+          dotClass: "bg-cyan-400",
+          chips: [
+            {
+              label: "Пёс в кроссовках на велике",
+              prompt: "Немецкая овчарка в чёрной шлейке и ярких красных кроссовках едет на велосипеде по мокрому городскому асфальту, сзади едет полицейская машина с синими мигалками, съёмка из окна авто с эффектом движения, фотореализм",
+            },
+            {
+              label: "Кот за рулём спорткара ночью",
+              prompt: "Серьёзный рыжий кот в чёрной кожаной куртке держит лапами руль спортивного авто на ночной неоновой улице Баку после дождя, POV из салона, киношный свет",
+            },
+            {
+              label: "Киберпанк Баку 2099",
+              prompt: "Пламенные башни Баку в стиле киберпанк 2099 года, летающие неоновые такси, отражения в мокром бульваре, ультрадетализация",
+            },
+            {
+              label: "Космонавт на скейтборде",
+              prompt: "Космонавт в белом скафандре выполняет трюк на скейтборде на фоне заката и пальм набережной, динамичный широкоугольный кадр",
+            },
+          ],
+        },
+        video: {
+          subtitle: "Видеостудия 60 FPS: ИИ-режиссёр + 4 последовательных кадра + motion blur + экспорт .webm.",
+          placeholder: "Опишите сюжет видео: например, пёс в кроссовках на велике уходит от полиции...",
+          btnText: "Создать видео",
+          dotClass: "bg-fuchsia-400",
+          chips: [
+            {
+              label: "Пёс в кроссовках на велике от полиции (POV)",
+              prompt: "Пёс в кроссовках на велике уходит от полиции по мокрому городу, POV съёмка из окна машины",
+            },
+            {
+              label: "Кот за рулём спорткара ночью",
+              prompt: "Кот за рулём спорткара мчится по ночному неоновому городу под дождём, POV из салона",
+            },
+            {
+              label: "Киберпанк погоня под дождём",
+              prompt: "Киберпанк погоня на футуристичном мотоцикле под проливным дождём между небоскрёбами",
+            },
+            {
+              label: "Космонавт на скейтборде в Баку",
+              prompt: "Космонавт на скейтборде мчится по вечерней набережной Баку мимо Пламенных башен",
+            },
+          ],
+        },
+      };
+
+      // DOM References
+      const chatFeed = document.getElementById("chatFeed");
+      const promptForm = d
