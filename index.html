@@ -1,10 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="ru" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EYVAZZADA AI — Умный ИИ-чат • Фото • Видеостудия 60 FPS</title>
+  <title>EYVAZZADA AI — Умный ИИ-чат • Фото • Видеостудия 60 FPS</title> <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#6d4aff">
+  <link rel="manifest" href="./manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -463,3 +464,8 @@
       // DOM References
       const chatFeed = document.getElementById("chatFeed");
       const promptForm = d
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js");
+  }
+</script>
