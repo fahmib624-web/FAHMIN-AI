@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EYVAZZADA AI — Умный ИИ-чат • Фото • Видеостудия 60 FPS</title> <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#6d4aff">
+  <title>EYVAZZADA AI — Умный ИИ-чат • Фото • Видеостудия 60 FPS</title>
   <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#6d4aff">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -365,17 +365,14 @@
     (() => {
       "use strict";
 
-      // Runtime API Configuration (Automatically injected by Canvas environment when apiKey is empty)
       const apiKey = "";
       const TEXT_MODEL = "gemini-3-flash-preview";
       const IMAGE_MODEL = "gemini-3.1-flash-image";
 
-      // Persistent Storage Keys
       const STORAGE_VIP_KEY = "eyvazzada_ai_vip_unlimited_v3";
       const STORAGE_QUOTA_KEY = "eyvazzada_ai_free_quota_v3";
       const MAX_FREE_QUOTA = 5;
 
-      // Load saved quota & VIP status safely
       let savedVip = false;
       let savedQuota = MAX_FREE_QUOTA;
       try {
@@ -386,10 +383,9 @@
         }
       } catch (_) {}
 
-      // Application State
       const state = {
-        mode: "chat", // 'chat' | 'image' | 'video'
-        aspectRatio: "9:16", // '9:16' | '1:1' | '16:9'
+        mode: "chat",
+        aspectRatio: "9:16",
         remainingFree: savedQuota,
         isUnlimited: savedVip,
         isBusy: false,
@@ -397,7 +393,6 @@
         activeVideoLoops: new Map(),
       };
 
-      // Mode Metadata & Viral Quick Chips
       const MODES = {
         chat: {
           subtitle: "Умный диалог с ИИ — ответы на любые вопросы, код, идеи, перевод и анализ.",
@@ -461,11 +456,11 @@
         },
       };
 
-      // DOM References
-      const chatFeed = document.getElementById("chatFeed");
-      const promptForm = d
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js");
-  }
-</script>
+      const $ = (id) => document.getElementById(id);
+      const chatFeed = $("chatFeed");
+      const promptForm = $("promptForm");
+      const promptInput = $("promptInput");
+      const submitBtn = $("submitBtn");
+      const submitBtnText = $("submitBtnText");
+      const quotaPill = $("quotaPill");
+      const quotaDot = $("quo
